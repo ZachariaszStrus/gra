@@ -7,7 +7,6 @@ class Human(Creature):
         self.isRounding = False
         self.startTime = None
         self.endTimeOfRounding = None
-        self.tmp = 0
 
     def startMoving(self, direction, lastTime):
         self.direction = direction
