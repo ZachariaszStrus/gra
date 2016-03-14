@@ -1,8 +1,8 @@
 <textures textureSize="50">
-	<texture type="grass" walkable="True">grass.jpg</texture>
-	<texture type="stone" walkable="False">stone.jpg</texture>
-	<texture type="sand" walkable="True">sand.jpg</texture>
-	<texture type="grass" walkable="True">grass.png</texture>
-	<human>homer.gif</human>
-	<bullet>bullet.gif</bullet>
+	<texture type="grass" walkable="True">textures/grass.jpg</texture>
+	<texture type="stone" walkable="False">textures/stone.jpg</texture>
+	<texture type="sand" walkable="True">textures/sand.jpg</texture>
+	<texture type="grass" walkable="True">textures/grass.png</texture>
+	<human>textures/homer.gif</human>
+	<bullet>textures/bullet.gif</bullet>
 </textures>
