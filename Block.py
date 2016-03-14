@@ -4,14 +4,14 @@ class Block(Thing):
     blocks = [[] for i in range(2)]
 
     @staticmethod
-    def readTable():
-        DOMTree = minidom.parse("textures.xml")
-        cNodes = DOMTree.childNodes
+    def read_table():
+        dom_tree = minidom.parse("textures.xml")
+        c_nodes = dom_tree.childNodes
 
         types = [[] for i in range(2)]
         i = 0
 
-        for texture in cNodes[0].getElementsByTagName("texture"):
+        for texture in c_nodes[0].getElementsByTagName("texture"):
             type = texture.getAttribute("type")
             walkable = texture.getAttribute("walkable")
 
@@ -34,4 +34,4 @@ class Block(Thing):
         self.walkable = walkable
         self.type = type
 
-Block.readTable()
+Block.read_table()

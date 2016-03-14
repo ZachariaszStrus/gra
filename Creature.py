@@ -11,18 +11,18 @@ class Creature(Thing):
         self.coolDown = 200
         self.direction = Position(1, 0)
 
-    def startMoving(self, direction, lastTime):
+    def start_moving(self, direction, last_time):
         self.direction = direction
-        self.lastTime = lastTime
+        self.lastTime = last_time
         self.isMoving = True
 
-    def endMoving(self):
+    def end_moving(self):
         self.isMoving = False
 
-    def move(self, curentTime):
+    def move(self, current_time):
         if self.isMoving:
-            self.position += self.direction * (float(curentTime - self.lastTime) / self.coolDown)
-            self.lastTime = curentTime
+            self.position += self.direction * (float(current_time - self.lastTime) / self.coolDown)
+            self.lastTime = current_time
 
 
 
