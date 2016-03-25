@@ -6,23 +6,22 @@ class Creature(Thing):
         Thing.__init__(self, appearance)
         self.position = position
         self.world = world
-        self.isMoving = False
-        self.lastTime = None
-        self.coolDown = 200
+        self.is_moving = False
+        self.last_time = None
+        self.cool_down = 200
         self.direction = Position(1, 0)
 
     def start_moving(self, direction, last_time):
         self.direction = direction
-        self.lastTime = last_time
-        self.isMoving = True
+        self.last_time = last_time
+        self.is_moving = True
 
     def end_moving(self):
-        self.isMoving = False
+        self.is_moving = False
 
     def move(self, current_time):
-        if self.isMoving:
-            self.position += self.direction * (float(current_time - self.lastTime) / self.coolDown)
-            self.lastTime = current_time
-
+        if self.is_moving:
+            self.position += self.direction * (float(current_time - self.last_time) / self.cool_down)
+            self.last_time = current_time
 
 

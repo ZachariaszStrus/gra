@@ -1,5 +1,7 @@
+from Sender import *
 from Container import *
 from CreaturesContainer import *
+from Direction import *
 
 
 class Display:
@@ -14,13 +16,6 @@ class Display:
         self.clock = pygame.time.Clock()
         exit_game = False
 
-        self.position = Position()
-        self.time = 0
-        self.last = pygame.time.get_ticks()
-        self.cooldown = 100
-        self.permit = True
-        self.part = 0
-
         dom_tree = minidom.parse('textures.xml')
         c_nodes = dom_tree.childNodes
         self.textureSize = int(c_nodes[0].getAttribute("textureSize"))
@@ -32,7 +27,7 @@ class Display:
             self.windowSizeY / self.textureSize / 2
         )
 
-        self.translation = Position(0, 0)
+        self.player = creatures_container.creatures[0]
 
         while not exit_game:  # main loop
             self.repaint(container, creatures_container)
@@ -41,57 +36,56 @@ class Display:
                 if event.type == pygame.QUIT:
                     exit_game = True
                 elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_RIGHT:
-                        creatures_container.human.start_moving(Position(1, 0), pygame.time.get_ticks())
-                    elif event.key == pygame.K_LEFT:
-                        creatures_container.human.start_moving(Position(-1, 0), pygame.time.get_ticks())
-                    elif event.key == pygame.K_DOWN:
-                        creatures_container.human.start_moving(Position(0, 1), pygame.time.get_ticks())
-                    elif event.key == pygame.K_UP:
-                        creatures_container.human.start_moving(Position(0, -1), pygame.time.get_ticks())
+                    new_direction = Direction.get_direction_by_key(event.key)
+                    if new_direction:
+                        self.player.start_moving(new_direction, pygame.time.get_ticks())
                     elif event.key == pygame.K_ESCAPE:
                         exit_game = True
                     elif event.key == pygame.K_SPACE:
-                        creatures_container.bullets.append(Bullet(Position(creatures_container.human.position.x,
-                                                                           creatures_container.human.position.y),
+                        creatures_container.bullets.append(Bullet(Position(self.player.position.x,
+                                                                           self.player.position.y),
                                                                   container,
-                                                                  Position(creatures_container.human.direction.x,
-                                                                           creatures_container.human.direction.y),
+                                                                  Position(self.player.direction.x,
+                                                                           self.player.direction.y),
                                                                   pygame.time.get_ticks()))
-                elif event.type == pygame.KEYUP:
-                    if event.key == pygame.K_RIGHT:
-                        creatures_container.human.end_moving(pygame.time.get_ticks())
-                    elif event.key == pygame.K_LEFT:
-                        creatures_container.human.end_moving(pygame.time.get_ticks())
-                    elif event.key == pygame.K_DOWN:
-                        creatures_container.human.end_moving(pygame.time.get_ticks())
-                    elif event.key == pygame.K_UP:
-                        creatures_container.human.end_moving(pygame.time.get_ticks())
+                    elif event.key == pygame.K_F1:
+                        creatures_container.move_other_players()
 
-            creatures_container.human.move(pygame.time.get_ticks())
-            for i in range(len(creatures_container.bullets)):
-                creatures_container.bullets[i].move(pygame.time.get_ticks())
+                    Sender.send(event.key)
+
+                elif event.type == pygame.KEYUP:
+                    if Direction.get_direction_by_key(event.key):
+                        self.player.end_moving(Direction.get_direction_by_key(event.key),
+                                               pygame.time.get_ticks())
+
+            for human in creatures_container.creatures:
+                human.move(pygame.time.get_ticks())
+
+            for bullet in creatures_container.bullets:
+                bullet.move(pygame.time.get_ticks())
 
         pygame.quit()
 
     def repaint(self, container, creatures_container):
         self.gameDisplay.fill((0, 0, 0))
 
+        map_position = self.centerOfScreen - self.player.position
         for y in range(container.size):
             for x in range(container.size):
-                map_position = Position(x, y) - creatures_container.human.position + self.centerOfScreen
+                field_position = Position(x, y) + map_position
                 image = self.textures[container.map[y][x].appearance]
-                self.gameDisplay.blit(image, (self.textureSize * map_position.x,
-                                              self.textureSize * map_position.y)
-                                      )
+                self.gameDisplay.blit(image, (self.textureSize * field_position.x,
+                                              self.textureSize * field_position.y))
 
-        self.gameDisplay.blit(pygame.image.load(creatures_container.human.appearance),
-                              (self.centerOfScreen.x * self.textureSize, self.centerOfScreen.y * self.textureSize))
+        for human in creatures_container.creatures:
+            position = human.position + map_position
+            self.gameDisplay.blit(pygame.image.load(human.appearance),
+                                  (position.x * self.textureSize,
+                                   position.y * self.textureSize))
 
-        for i in range(len(creatures_container.bullets)):
-            bullet_position = creatures_container.bullets[
-                                 i].position - creatures_container.human.position + self.centerOfScreen
-            self.gameDisplay.blit(pygame.image.load(creatures_container.bullets[i].appearance),
+        for bullet in creatures_container.bullets:
+            bullet_position = bullet.position - self.player.position + self.centerOfScreen
+            self.gameDisplay.blit(pygame.image.load(bullet.appearance),
                                   (self.textureSize * bullet_position.x, self.textureSize * bullet_position.y))
 
         pygame.display.update()

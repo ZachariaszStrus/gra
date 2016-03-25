@@ -33,6 +33,10 @@ class Position:
     def __eq__(self, other):
         return self.x == other.x and self.y == other.y
 
+    def __abs__(self):
+        return Position(abs(self.x), abs(self.y))
+
+
     def round(self):
         return Position(round(self.x), round(self.y))
 

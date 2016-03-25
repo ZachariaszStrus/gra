@@ -66,7 +66,18 @@ class Container:
 
                         self.map[i*self.segmentSize+k][j*self.segmentSize+l] = block
 
-C = Container()
+    def corner(self, n):
+        if n == 0:
+            return Position(0, 0)
+        elif n == 1:
+            return Position(0, self.size - 1)
+        elif n == 2:
+            return Position(self.size - 1, self.size - 1)
+        elif n == 3:
+            return Position(self.size - 1, 0)
+        else:
+            return None
+
 
 
 

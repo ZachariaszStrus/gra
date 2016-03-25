@@ -10,4 +10,4 @@ class Bullet(Creature):
     def __init__(self, human_position, world, direction, last_time):
         Creature.__init__(self, human_position, self.get_image(), world)
         self.start_moving(direction, last_time)
-        self.coolDown = 100
+        self.cool_down = 100
