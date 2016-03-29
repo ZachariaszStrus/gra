@@ -1,6 +1,5 @@
 from Sender import *
 from Container import *
-from CreaturesContainer import *
 from Direction import *
 
 

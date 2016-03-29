@@ -1,11 +1,10 @@
 import random
 
 import pygame
-from enum import Enum
 from Position import Position
 
 
-class Direction(Enum):
+class Direction():
     right = Position(1, 0)
     left = Position(-1, 0)
     up = Position(0, -1)
