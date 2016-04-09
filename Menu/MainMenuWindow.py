@@ -15,16 +15,11 @@ class MainMenuWindow:
         self.gameDisplay.fill((0, 0, 0))
         pygame.display.set_caption("GRA")
 
-        pygame.draw.rect(self.gameDisplay, (255, 255, 255), [100, 100, 50, 50])
-        self.start_game_button = Button((255, 255, 255), (500, 300, 200, 50), "Start game", self.gameDisplay)
-        self.start_game_button.draw()
-
         exit_game = False
         while not exit_game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     exit_game = True
-                    return
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     self.start_game()
                     exit_game = True
@@ -34,5 +29,10 @@ class MainMenuWindow:
     def start_game(self):
         c = Container()
         disp = Display(self.gameDisplay, c)
+
+    def draw_menu(self):
+        self.start_game_button = Button((255, 255, 255), (500, 300, 200, 50), "Start game", self.gameDisplay)
+        self.start_game_button.draw()
+        pygame.display.update()
 
 MainMenuWindow()
