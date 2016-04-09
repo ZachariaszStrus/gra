@@ -30,19 +30,3 @@ class Listener (threading.Thread):
         while 1:
             print(self.server.listen())
         self.server.close()
-
-
-
-
-
-
-class Sender:
-    SERVER = ("localhost", 9876)
-
-    def __init__(self):
-
-
-        # sock.send(bytes(key)
-
-    def close(self):
-
