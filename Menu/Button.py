@@ -2,9 +2,9 @@ import pygame
 
 
 class Button:
-    def __init__(self, color, dim, text, disp):
+    def __init__(self, color, pos, dim, text, disp):
         self.color = color
-        self.dim = dim
+        self.dim = (pos.x, pos.y, dim[0], dim[1])
         self.text = text
         self.display = disp
 
@@ -16,5 +16,6 @@ class Button:
         text_rect.center = ((self.dim[0] + self.dim[2]/2), (self.dim[1] + self.dim[3]/2))
         self.display.blit(text_surf, text_rect)
 
-    def is_mouse_on(self, mouse):
+    def is_clicked(self):
+        mouse = pygame.mouse.get_pos()
         return self.dim[0] < mouse[0] < self.dim[0] + self.dim[2] and self.dim[1] < mouse[1] < self.dim[1] + self.dim[3]

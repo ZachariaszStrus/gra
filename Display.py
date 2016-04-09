@@ -1,3 +1,5 @@
+from Client.Listener import Listener
+from Client.Sender import Sender
 from Container import *
 from Direction import *
 
@@ -22,6 +24,11 @@ class Display:
             self.windowSizeX / self.textureSize / 2,
             self.windowSizeY / self.textureSize / 2
         )
+
+        self.listener = Listener()
+        self.listener.start()
+        self.sender = Sender()
+
         self.player = container.creatures[0]
         self.start_game()
 
@@ -37,19 +44,18 @@ class Display:
                     new_direction = Direction.get_direction_by_key(event.key)
                     if new_direction:
                         self.player.start_moving(new_direction, pygame.time.get_ticks())
+                        self.sender.send(event.key)
                     elif event.key == pygame.K_ESCAPE:
                         exit_game = True
                     elif event.key == pygame.K_SPACE:
                         self.container.bullets.append(Bullet(Position(self.player.position.x,
-                                                                           self.player.position.y),
-                                                                  self.container,
-                                                                  Position(self.player.direction.x,
-                                                                           self.player.direction.y),
-                                                                  pygame.time.get_ticks()))
+                                                                      self.player.position.y),
+                                                             self.container,
+                                                             Position(self.player.direction.x,
+                                                                      self.player.direction.y),
+                                                             pygame.time.get_ticks()))
                     elif event.key == pygame.K_F1:
                         self.container.move_other_players()
-
-                    #Sender.send(event.key)
 
                 elif event.type == pygame.KEYUP:
                     if Direction.get_direction_by_key(event.key):
@@ -90,6 +96,3 @@ class Display:
                                   (self.textureSize * bullet_position.x, self.textureSize * bullet_position.y))
 
         pygame.display.update()
-
-
-

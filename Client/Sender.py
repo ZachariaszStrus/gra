@@ -1,28 +1,20 @@
 import threading
 import socket
 
+
 #("localhost", 9876)
 class Sender:
 
-    def __init__(self, adres):
-        self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server.connect(adres)
+    def __init__(self, address=("localhost", 9999)):
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.socket.connect(address)
 
-    def send(self, index):
-        self.server.send(index)
+    def send(self, key):
+        self.socket.send(bytes(self.get_key_index(key)))
 
     def close(self):
-        self.server.close()
+        self.socket.close()
 
-
-class Listener (threading.Thread):
-
-    def __init__(self, adres):
-        threading.Thread.__init__(self)
-        self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server.connect(adres)
-
-    def run(self):
-        while 1:
-            print(self.server.listen())
-        self.server.close()
+    @staticmethod
+    def get_key_index(key):
+        return key
