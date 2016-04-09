@@ -24,4 +24,7 @@ class Creature(Thing):
             self.position += self.direction * (float(current_time - self.last_time) / self.cool_down)
             self.last_time = current_time
 
+    def canMoveTo(self, newPosition):
+        pass
+
 

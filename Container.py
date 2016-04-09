@@ -12,12 +12,15 @@ class Container:
         self.creatures = list()
         self.bullets = list()
 
+        self.read_from_xml()
+        self.get_players()
+
     def get_players(self):
         dom_tree = minidom.parse('textures.xml')
         c_nodes = dom_tree.childNodes
         image = c_nodes[0].getElementsByTagName("human")[0].childNodes[0].toxml()
         for i in range(4):
-            self.creatures.append(Human(container.corner(i), image, container))
+            self.creatures.append(Human(self.corner(i), image, self))
 
     def move_other_players(self):
         for i in range(1, 4):
@@ -48,7 +51,16 @@ class Container:
 
             self.map_of_obstacles.append(tmp)
 
-C = Container()
-C.read_from_xml()
+    def corner(self, n):
+        if n == 0:
+            return Position(0, 0)
+        elif n == 1:
+            return Position(0, self.size - 1)
+        elif n == 2:
+            return Position(self.size - 1, self.size - 1)
+        elif n == 3:
+            return Position(self.size - 1, 0)
+        else:
+            return None
 
 

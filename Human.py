@@ -1,4 +1,4 @@
-from Block import *
+from Creature import Creature
 
 
 class Human(Creature):
