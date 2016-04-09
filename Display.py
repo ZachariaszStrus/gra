@@ -7,10 +7,10 @@ class Display:
         self.windowSizeX = display.get_width()
         self.windowSizeY = display.get_height()
         self.textures = []
+        self.container = container
 
         self.gameDisplay = display
         self.clock = pygame.time.Clock()
-        exit_game = False
 
         dom_tree = minidom.parse('textures.xml')
         c_nodes = dom_tree.childNodes
@@ -22,11 +22,13 @@ class Display:
             self.windowSizeX / self.textureSize / 2,
             self.windowSizeY / self.textureSize / 2
         )
-
         self.player = container.creatures[0]
+        self.start_game()
 
+    def start_game(self):
+        exit_game = False
         while not exit_game:  # main loop
-            self.repaint(container)
+            self.repaint(self.container)
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -38,14 +40,14 @@ class Display:
                     elif event.key == pygame.K_ESCAPE:
                         exit_game = True
                     elif event.key == pygame.K_SPACE:
-                        container.bullets.append(Bullet(Position(self.player.position.x,
+                        self.container.bullets.append(Bullet(Position(self.player.position.x,
                                                                            self.player.position.y),
-                                                                  container,
+                                                                  self.container,
                                                                   Position(self.player.direction.x,
                                                                            self.player.direction.y),
                                                                   pygame.time.get_ticks()))
                     elif event.key == pygame.K_F1:
-                        container.move_other_players()
+                        self.container.move_other_players()
 
                     #Sender.send(event.key)
 
@@ -54,12 +56,11 @@ class Display:
                         self.player.end_moving(Direction.get_direction_by_key(event.key),
                                                pygame.time.get_ticks())
 
-            for human in container.creatures:
+            for human in self.container.creatures:
                 human.move(pygame.time.get_ticks())
 
-            for bullet in container.bullets:
+            for bullet in self.container.bullets:
                 bullet.move(pygame.time.get_ticks())
-
 
     def repaint(self, container):
         self.gameDisplay.fill((0, 0, 0))
