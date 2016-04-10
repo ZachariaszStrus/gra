@@ -25,11 +25,11 @@ class Display:
             self.windowSizeY / self.textureSize / 2
         )
 
-        self.listener = Listener()
-        self.listener.start()
-        self.sender = Sender()
+        #self.listener = Listener()
+        #self.listener.start()
+        #self.sender = Sender()
 
-        self.player = container.creatures[0]
+        self.player = container.player
         self.start_game()
 
     def start_game(self):
@@ -44,7 +44,7 @@ class Display:
                     new_direction = Direction.get_direction_by_key(event.key)
                     if new_direction:
                         self.player.start_moving(new_direction, pygame.time.get_ticks())
-                        self.sender.send(event.key)
+                        #self.sender.send(event.key)
                     elif event.key == pygame.K_ESCAPE:
                         exit_game = True
                     elif event.key == pygame.K_SPACE:
@@ -59,14 +59,18 @@ class Display:
 
                 elif event.type == pygame.KEYUP:
                     if Direction.get_direction_by_key(event.key):
-                        self.player.end_moving(Direction.get_direction_by_key(event.key),
-                                               pygame.time.get_ticks())
+                        self.player.end_moving(Direction.get_direction_by_key(event.key))
 
             for human in self.container.creatures:
                 human.move(pygame.time.get_ticks())
 
-            for bullet in self.container.bullets:
-                bullet.move(pygame.time.get_ticks())
+            bullets_to_remove = list()
+            for i in range(len(self.container.bullets)):
+                if not self.container.bullets[i].move(pygame.time.get_ticks()):
+                    bullets_to_remove.append(i)
+
+            for i in bullets_to_remove:
+                self.container.bullets.pop(i)
 
     def repaint(self, container):
         self.gameDisplay.fill((0, 0, 0))

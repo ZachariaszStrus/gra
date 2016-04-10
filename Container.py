@@ -15,6 +15,8 @@ class Container:
         self.read_from_xml()
         self.get_players()
 
+        self.player = self.creatures[0]
+
     def get_players(self):
         dom_tree = minidom.parse('textures.xml')
         c_nodes = dom_tree.childNodes
