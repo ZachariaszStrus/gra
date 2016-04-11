@@ -25,9 +25,9 @@ class Display:
             self.windowSizeY / self.textureSize / 2
         )
 
-        #self.listener = Listener()
-        #self.listener.start()
-        #self.sender = Sender()
+        self.listener = Listener()
+        self.listener.start()
+        self.sender = Sender()
 
         self.player = container.player
         self.start_game()
@@ -43,8 +43,8 @@ class Display:
                 elif event.type == pygame.KEYDOWN:
                     new_direction = Direction.get_direction_by_key(event.key)
                     if new_direction:
+                        self.sender.send(event.key)
                         self.player.start_moving(new_direction, pygame.time.get_ticks())
-                        #self.sender.send(event.key)
                     elif event.key == pygame.K_ESCAPE:
                         exit_game = True
                     elif event.key == pygame.K_SPACE:
@@ -55,6 +55,8 @@ class Display:
                         self.player.end_moving(Direction.get_direction_by_key(event.key))
 
             self.container.move_creatures(pygame.time.get_ticks())
+
+        self.listener.stop()
 
     def repaint(self, container):
         self.gameDisplay.fill((0, 0, 0))
