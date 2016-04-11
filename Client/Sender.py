@@ -2,10 +2,9 @@ import threading
 import socket
 
 
-#("localhost", 9876)
 class Sender:
 
-    def __init__(self, address=("localhost", 9999)):
+    def __init__(self, address=("42.0.174.162", 9998)):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.connect(address)
 
@@ -15,6 +14,5 @@ class Sender:
     def close(self):
         self.socket.close()
 
-    @staticmethod
-    def get_key_index(key):
+    def get_key_index(self, key):
         return key
