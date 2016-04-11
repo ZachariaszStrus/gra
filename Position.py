@@ -2,6 +2,7 @@ import math
 
 
 class Position:
+    epsilon = 0.1
     def __init__(self, x=0, y=0):
         self.x = x
         self.y = y
@@ -38,4 +39,8 @@ class Position:
 
     def round(self):
         return Position(round(self.x), round(self.y))
+
+    def is_almost_rounded(self):
+        return abs(self.x - round(self.x)) <= Position.epsilon and \
+                    abs(self.y - round(self.y)) <= Position.epsilon
 

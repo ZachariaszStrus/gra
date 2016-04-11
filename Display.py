@@ -6,8 +6,8 @@ from Direction import *
 
 class Display:
     def __init__(self, display, container):
-        self.windowSizeX = display.get_width()
-        self.windowSizeY = display.get_height()
+        self.windowSizeX = 550
+        self.windowSizeY = 550
         self.textures = []
         self.container = container
 
@@ -25,11 +25,11 @@ class Display:
             self.windowSizeY / self.textureSize / 2
         )
 
-        self.listener = Listener()
-        self.listener.start()
-        self.sender = Sender()
+        #self.listener = Listener()
+        #self.listener.start()
+        #self.sender = Sender()
 
-        self.player = container.creatures[0]
+        self.player = container.player
         self.start_game()
 
     def start_game(self):
@@ -44,29 +44,17 @@ class Display:
                     new_direction = Direction.get_direction_by_key(event.key)
                     if new_direction:
                         self.player.start_moving(new_direction, pygame.time.get_ticks())
-                        self.sender.send(event.key)
+                        #self.sender.send(event.key)
                     elif event.key == pygame.K_ESCAPE:
                         exit_game = True
                     elif event.key == pygame.K_SPACE:
-                        self.container.bullets.append(Bullet(Position(self.player.position.x,
-                                                                      self.player.position.y),
-                                                             self.container,
-                                                             Position(self.player.direction.x,
-                                                                      self.player.direction.y),
-                                                             pygame.time.get_ticks()))
-                    elif event.key == pygame.K_F1:
-                        self.container.move_other_players()
+                        self.player.shoot(pygame.time.get_ticks())
 
                 elif event.type == pygame.KEYUP:
                     if Direction.get_direction_by_key(event.key):
-                        self.player.end_moving(Direction.get_direction_by_key(event.key),
-                                               pygame.time.get_ticks())
+                        self.player.end_moving(Direction.get_direction_by_key(event.key))
 
-            for human in self.container.creatures:
-                human.move(pygame.time.get_ticks())
-
-            for bullet in self.container.bullets:
-                bullet.move(pygame.time.get_ticks())
+            self.container.move_creatures(pygame.time.get_ticks())
 
     def repaint(self, container):
         self.gameDisplay.fill((0, 0, 0))

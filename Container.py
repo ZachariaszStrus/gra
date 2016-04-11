@@ -1,6 +1,6 @@
 from Direction import *
-from Bullet import *
 from Creature import *
+from Human import Human
 
 
 class Container:
@@ -14,6 +14,8 @@ class Container:
 
         self.read_from_xml()
         self.get_players()
+
+        self.player = self.creatures[1]
 
     def get_players(self):
         dom_tree = minidom.parse('textures.xml')
@@ -62,5 +64,12 @@ class Container:
             return Position(self.size - 1, 0)
         else:
             return None
+
+    def move_creatures(self, current_time):
+        for human in self.creatures:
+                human.move(current_time)
+
+        for bullet in self.bullets:
+            bullet.move(current_time)
 
 
