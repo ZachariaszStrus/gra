@@ -1,6 +1,8 @@
 from xml.dom import minidom
 
 from Human import *
+from Creature import *
+
 
 
 class Bullet(Creature):
@@ -18,18 +20,16 @@ class Bullet(Creature):
         if self.check_if_can_move(current_time):
             self.position += self.direction * (float(current_time - self.last_time) / self.cool_down)
             self.last_time = current_time
-            return True
         else:
-            return False
+            self.world.bullets.remove(self)
 
     def check_if_can_move(self, current_time):
         if self.is_moving:
             new_position = self.position + self.direction * (float(current_time - self.last_time) / self.cool_down)
             new_position = new_position.round()
-            if self.collision_with_creatures(new_position):
-                self.is_moving = False
-                return False
-            if self.is_outside_of_map(new_position) or self.world.map_of_obstacles[int(new_position.y)][int(new_position.x)]:
+            if self.collision_with_creatures(new_position) or \
+                    self.is_outside_of_map(new_position) or \
+                    self.collision_with_obstacles(new_position):
                 self.is_moving = False
                 return False
             return True
@@ -42,5 +42,12 @@ class Bullet(Creature):
             if new_position == creature.position:
                 self.world.creatures.remove(creature)
                 return True
+
+        return False
+
+    def collision_with_obstacles(self, new_position):
+        if self.world.map_of_obstacles[int(new_position.y)][int(new_position.x)]:
+            self.world.map_of_obstacles[int(new_position.y)][int(new_position.x)] = None
+            return True
 
         return False

@@ -6,8 +6,8 @@ from Direction import *
 
 class Display:
     def __init__(self, display, container):
-        self.windowSizeX = display.get_width()
-        self.windowSizeY = display.get_height()
+        self.windowSizeX = 550
+        self.windowSizeY = 550
         self.textures = []
         self.container = container
 
@@ -48,29 +48,13 @@ class Display:
                     elif event.key == pygame.K_ESCAPE:
                         exit_game = True
                     elif event.key == pygame.K_SPACE:
-                        self.container.bullets.append(Bullet(Position(self.player.position.x,
-                                                                      self.player.position.y),
-                                                             self.container,
-                                                             Position(self.player.direction.x,
-                                                                      self.player.direction.y),
-                                                             pygame.time.get_ticks()))
-                    elif event.key == pygame.K_F1:
-                        self.container.move_other_players()
+                        self.player.shoot(pygame.time.get_ticks())
 
                 elif event.type == pygame.KEYUP:
                     if Direction.get_direction_by_key(event.key):
                         self.player.end_moving(Direction.get_direction_by_key(event.key))
 
-            for human in self.container.creatures:
-                human.move(pygame.time.get_ticks())
-
-            bullets_to_remove = list()
-            for i in range(len(self.container.bullets)):
-                if not self.container.bullets[i].move(pygame.time.get_ticks()):
-                    bullets_to_remove.append(i)
-
-            for i in bullets_to_remove:
-                self.container.bullets.pop(i)
+            self.container.move_creatures(pygame.time.get_ticks())
 
     def repaint(self, container):
         self.gameDisplay.fill((0, 0, 0))
