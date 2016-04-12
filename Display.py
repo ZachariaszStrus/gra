@@ -5,11 +5,15 @@ from Direction import *
 
 
 class Display:
-    def __init__(self, display, container):
+    def __init__(self, display, container, listener, sender):
         self.windowSizeX = 550
         self.windowSizeY = 550
         self.textures = []
         self.container = container
+
+        self.listener = listener
+        self.listener.start()
+        self.sender = sender
 
         self.gameDisplay = display
         self.clock = pygame.time.Clock()
@@ -24,10 +28,6 @@ class Display:
             self.windowSizeX / self.textureSize / 2,
             self.windowSizeY / self.textureSize / 2
         )
-
-        self.listener = Listener()
-        self.listener.start()
-        self.sender = Sender()
 
         self.player = container.player
         self.start_game()
