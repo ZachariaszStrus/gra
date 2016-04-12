@@ -38,11 +38,23 @@ class Listener (threading.Thread):
 
     def run(self):
         buf = bytearray(4)
-        while self.running:
-            if self.socket.recv_into(buf) > 0:
-                num = struct.unpack("!i", buf)[0]
-                print(num)
-                print(self.get_string(num))
+        results = list()
+
+        while len(list) < 3:
+            while self.running:
+                if self.socket.recv_into(buf) > 0:
+                    num = struct.unpack("!i", buf)[0]
+                    print(num)
+                    results.append(self.get_string(num))
+                    print results[len(results) - 1]
+
+        # 0 = index gracza
+        # 1 = nazwa pliku
+        # 2 = treść pliku
+
+        #map_file = open(results[1], "w")
+        #map_file.write(results[2])
+        #map_file.close()
 
         self.socket.close()
 
