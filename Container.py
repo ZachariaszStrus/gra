@@ -12,10 +12,10 @@ class Container:
         self.creatures = list()
         self.bullets = list()
 
+    def load_world(self):
         self.read_from_xml()
         self.get_players()
-
-        self.player = self.creatures[1]
+        self.player = self.creatures[0]
 
     def get_players(self):
         dom_tree = minidom.parse('textures.xml')
@@ -24,9 +24,8 @@ class Container:
         for i in range(4):
             self.creatures.append(Human(self.corner(i), image, self))
 
-    def move_other_players(self):
-        for i in range(1, 4):
-            self.creatures[i].start_moving(Direction.get_rand(), pygame.time.get_ticks())
+    def move_other_player(self,i, key):
+        self.creatures[i].start_moving(Direction.get_direction_by_key(key), pygame.time.get_ticks())
 
     def read_from_xml(self):
         dom_tree = minidom.parse('container.xml')

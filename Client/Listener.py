@@ -4,8 +4,10 @@ import struct
 
 
 class Listener (threading.Thread):
-    def __init__(self, address=("localhost", 9999)):
+    def __init__(self, container, address=("25.37.158.69", 9999)):
         threading.Thread.__init__(self)
+
+        self.container = container
 
         self.socket = socket(AF_INET, SOCK_STREAM)
         self.socket.connect(address)
@@ -37,14 +39,35 @@ class Listener (threading.Thread):
         return result
 
     def run(self):
-        buf = bytearray(4)
         while self.running:
+            buf = bytearray(4)
+            if self.socket.recv_into(buf) > 0:
+                player_id = int(buf[0])-48
+                event_key = int(buf[1:4])
+                print player_id
+                print event_key
+                self.container.move_other_player(player_id, event_key)
+
+        self.socket.close()
+
+    def receive_map(self):
+        buf = bytearray(4)
+        results = list()
+
+        while len(results) < 3:
             if self.socket.recv_into(buf) > 0:
                 num = struct.unpack("!i", buf)[0]
                 print(num)
-                print(self.get_string(num))
+                results.append(self.get_string(num))
+                print results[len(results) - 1]
 
-        self.socket.close()
+        # 0 = index gracza
+        # 1 = nazwa pliku
+        # 2 = tresc pliku
+
+        map_file = open(results[1], "w")
+        map_file.write(results[2])
+        map_file.close()
 
 
 

@@ -1,5 +1,7 @@
 import pygame
 
+from Client.Listener import Listener
+from Client.Sender import Sender
 from Container import Container
 from Display import Display
 from Menu.Button import Button
@@ -31,16 +33,34 @@ class MainMenuWindow:
         pygame.quit()
 
     def start_game(self):
-        c = Container()
-        disp = Display(self.gameDisplay, c)
+        self.draw_waiting_screen()
+        container = Container()
+
+        listener = Listener(container)
+        sender = Sender()
+        listener.receive_map()
+
+        container.load_world()
+        Display(self.gameDisplay, container, listener, sender)
 
     def add_controls(self):
-        self.start_game_button = Button((255, 255, 255), Position(50, 50), (450, 150)
-                                        , "Start game", self.gameDisplay)
+        self.start_game_button = Button((255, 255, 255), (0, 0, 0),
+                                        Position(50, 50), (450, 150),
+                                        "Start game",
+                                        self.gameDisplay)
 
     def draw_menu(self):
         self.gameDisplay.fill((0, 0, 0))
         self.start_game_button.draw()
         pygame.display.update()
+
+    def draw_waiting_screen(self):
+        self.gameDisplay.fill((0, 0, 0))
+        Button((0, 0, 0), (255, 255, 255),
+               Position(50, 200), (450, 150),
+               "Waiting for map . . .",
+               self.gameDisplay).draw()
+        pygame.display.update()
+
 
 MainMenuWindow()
