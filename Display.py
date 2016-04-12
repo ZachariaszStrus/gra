@@ -38,6 +38,7 @@ class Display:
             self.repaint(self.container)
 
             for event in pygame.event.get():
+                t = event.type
                 if event.type == pygame.QUIT:
                     exit_game = True
                 elif event.type == pygame.KEYDOWN:
@@ -54,7 +55,7 @@ class Display:
                         self.sender.send(event.key)
                         self.player.end_moving(Direction.get_direction_by_key(event.key))
 
-                self.sender.send(event.type, event.key)
+                self.sender.send(t, event.key)
             self.container.move_creatures(pygame.time.get_ticks())
 
         self.listener.stop()
