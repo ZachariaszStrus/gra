@@ -11,33 +11,33 @@ class Sender:
         if not self.socket.connect(address):
             return
 
-    def send(self, event):
-        if self.get_key_index(event):
-            self.socket.send(bytes(self.get_key_index(event)))
-            print "Sent : ", self.get_key_index(event)
+    def send(self, t, k):
+        if self.get_key_index(t, k):
+            self.socket.send(bytes(self.get_key_index(t, k)))
+            print "Sent : ", self.get_key_index(t, k)
 
     def close(self):
         self.socket.close()
 
-    def get_key_index(self, event):
+    def get_key_index(self, t, k):
         res = bytearray(1)
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_RIGHT:
+        if t == pygame.KEYDOWN:
+            if k == pygame.K_RIGHT:
                 res = 0
-            elif event.key == pygame.K_LEFT:
+            elif k == pygame.K_LEFT:
                 res = 1
-            elif event.key == pygame.K_UP:
+            elif k == pygame.K_UP:
                 res = 2
-            elif event.key == pygame.K_DOWN:
+            elif k == pygame.K_DOWN:
                 res = 3
-        elif event.type == pygame.KEYUP:
-            if event.key == pygame.K_RIGHT:
+        elif t == pygame.KEYUP:
+            if k == pygame.K_RIGHT:
                 res = 4
-            elif event.key == pygame.K_LEFT:
+            elif k == pygame.K_LEFT:
                 res = 5
-            elif event.key == pygame.K_UP:
+            elif k == pygame.K_UP:
                 res = 6
-            elif event.key == pygame.K_DOWN:
+            elif k == pygame.K_DOWN:
                 res = 7
         else:
             res = False
