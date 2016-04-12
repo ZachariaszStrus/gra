@@ -64,15 +64,8 @@ class Listener (threading.Thread):
         map_file = open("container.xml", "w")
         map_file.write(results[0])
         map_file.close()
-
-    def receive_index(self):
-        buf = bytearray(4)
-        result = ""
-        while len(result) < 1:
-            if self.socket.recv_into(buf) > 0:
-                num = struct.unpack("!i", buf)[0]
-                result = self.get_string(num)
-                self.container.player_id = int(num) - 48
+        print int(results[1])
+        self.container.player_id = int(results[1])
 
     def do_event(self, player_id, res):
         if res == 0:

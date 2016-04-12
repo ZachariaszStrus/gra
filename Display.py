@@ -54,7 +54,7 @@ class Display:
                         self.sender.send(event.key)
                         self.player.end_moving(Direction.get_direction_by_key(event.key))
 
-                self.sender.send(event)
+                self.sender.send(event.type, event.key)
             self.container.move_creatures(pygame.time.get_ticks())
 
         self.listener.stop()
