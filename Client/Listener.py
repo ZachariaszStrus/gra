@@ -2,6 +2,8 @@ from socket import *
 import threading
 import struct
 
+import pygame
+
 
 class Listener (threading.Thread):
     def __init__(self, container, address=("25.37.158.69", 9999)):
@@ -43,10 +45,10 @@ class Listener (threading.Thread):
             buf = bytearray(4)
             if self.socket.recv_into(buf) > 0:
                 player_id = int(buf[0])-48
-                event_key = int(buf[1:4])
-                print player_id
-                print event_key
-                self.container.move_other_player(player_id, event_key)
+                event_key = int(buf[1])
+                print "Player id : ", player_id
+                print "Key : ", event_key
+                self.do_event(player_id, event_key)
 
         self.socket.close()
 
@@ -54,20 +56,41 @@ class Listener (threading.Thread):
         buf = bytearray(4)
         results = list()
 
-        while len(results) < 3:
+        while len(results) < 2:
             if self.socket.recv_into(buf) > 0:
                 num = struct.unpack("!i", buf)[0]
-                print(num)
                 results.append(self.get_string(num))
-                print results[len(results) - 1]
 
-        # 0 = index gracza
-        # 1 = nazwa pliku
-        # 2 = tresc pliku
-
-        map_file = open(results[1], "w")
-        map_file.write(results[2])
+        map_file = open("container.xml", "w")
+        map_file.write(results[0])
         map_file.close()
+
+    def receive_index(self):
+        buf = bytearray(4)
+        result = ""
+        while len(result) < 1:
+            if self.socket.recv_into(buf) > 0:
+                num = struct.unpack("!i", buf)[0]
+                result = self.get_string(num)
+                self.container.player_id = int(num) - 48
+
+    def do_event(self, player_id, res):
+        if res == 0:
+            self.container.move_other_player(player_id, pygame.K_RIGHT)
+        elif res == 1:
+            self.container.move_other_player(player_id, pygame.K_LEFT)
+        elif res == 2:
+            self.container.move_other_player(player_id, pygame.K_UP)
+        elif res == 3:
+            self.container.move_other_player(player_id, pygame.K_DOWN)
+        elif res == 4:
+            self.container.stop_other_player(player_id, pygame.K_RIGHT)
+        elif res == 5:
+            self.container.stop_other_player(player_id, pygame.K_LEFT)
+        elif res == 6:
+            self.container.stop_other_player(player_id, pygame.K_UP)
+        elif res == 7:
+            self.container.stop_other_player(player_id, pygame.K_DOWN)
 
 
 
