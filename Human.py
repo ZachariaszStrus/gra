@@ -45,13 +45,15 @@ class Human(object, Creature):
                     self.start_moving(self.moves_to_do.pop(0), current_time)
 
     def check_if_can_move(self, new_position):
-        super(Human, self).check_if_can_move(new_position)
-        for creature in self.world.creatures:
-            if creature == self:
-                continue
-            if new_position == creature.position.round():
-                return False
-        return True
+        if super(Human, self).check_if_can_move(new_position):
+            for creature in self.world.creatures:
+                if creature == self:
+                    continue
+                if new_position == creature.position.round():
+                    return False
+            return True
+        else:
+            return 
 
     def shoot(self):
         if self == self.world.player:
