@@ -10,13 +10,14 @@ class Human(object, Creature):
         Creature.__init__(self, position, appearance, world)
         self.destination_pos = Position()
 
-    def start_moving(self, direction, current_time):
+    def start_moving(self, direction, current_time, key):
         if not self.is_moving:
             self.direction = direction
             if self.check_if_can_move(current_time):
                 self.destination_pos = self.position + self.direction
                 self.last_time = current_time
                 self.is_moving = True
+                self.world.sender.send(key)
 
     def move(self, current_time):
         if self.is_moving:
