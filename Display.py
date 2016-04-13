@@ -48,8 +48,6 @@ class Display:
 
             self.container.move_creatures(pygame.time.get_ticks())
 
-        self.listener.stop()
-
     def repaint(self, container):
         self.gameDisplay.fill((0, 0, 0))
 
