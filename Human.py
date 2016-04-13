@@ -3,7 +3,7 @@ from xml.dom import minidom
 
 import pygame
 
-from Direction import  Direction
+from Direction import Direction
 from Bullet import Bullet
 from Creature import Creature
 from Position import Position

@@ -39,7 +39,7 @@ class MainMenuWindow:
         self.draw_waiting_screen()
 
         sender = Sender()
-        container = Container(None)
+        container = Container(sender)
 
         listener = Listener(container)
         listener.receive_map()
@@ -71,7 +71,8 @@ class MainMenuWindow:
     def draw_waiting_screen(self):
         self.gameDisplay.fill((0, 0, 0))
         Button((0, 0, 0), (255, 255, 255),
-               Position(50, 200), (450, 150),
+               Position(self.windowSizeX/10, self.windowSizeY/2),
+               (self.windowSizeX*8/10, self.windowSizeY*2/10),
                "Waiting for map . . .",
                self.gameDisplay).draw()
         pygame.display.update()
