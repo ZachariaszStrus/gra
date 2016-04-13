@@ -27,7 +27,7 @@ class Container:
 
     def handle_server_input(self, player, key):
         if Direction.get_direction_by_key(key):
-            self.creatures[player].start_moving(key, pygame.time.get_ticks())
+            self.creatures[player].start_moving(Direction.get_direction_by_key(key), pygame.time.get_ticks())
         elif key == pygame.K_SPACE:
             self.creatures[player].shoot()
 
