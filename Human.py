@@ -26,7 +26,7 @@ class Human(object, Creature):
                     self.world.sender.send(key)
             return True
         else:
-            if self == self.world.player:
+            if self != self.world.player:
                 self.moves_to_do.append(direction)
             return False
 
