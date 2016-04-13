@@ -53,7 +53,7 @@ class Human(object, Creature):
                     return False
             return True
         else:
-            return 
+            return False
 
     def shoot(self):
         if self == self.world.player:
