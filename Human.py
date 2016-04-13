@@ -43,9 +43,11 @@ class Human(object, Creature):
                 else:
                     self.direction.x = self.moves_to_do[0].x
                     self.direction.y = self.moves_to_do[0].y
-                    print "Move from queue : x=", self.direction.x, " y=", self.direction.y
+                    print "Move from queue(", len(self.moves_to_do), ") : x=", \
+                        self.moves_to_do[0], " y=", self.moves_to_do[0]
                     self.moves_to_do.pop(0)
-                    print "Queue after pop : x=", self.direction.x, " y=", self.direction.y
+                    print "Queue(", len(self.moves_to_do), ") after pop : x=", \
+                        self.moves_to_do[0], " y=", self.moves_to_do[0]
 
     def shoot(self):
         self.world.sender.send(pygame.K_SPACE)
