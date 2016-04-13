@@ -26,7 +26,7 @@ class Human(object, Creature):
                     self.world.sender.send(key)
         else:
             if self != self.world.player:
-                self.moves_to_do.append(direction)
+                self.moves_to_do.append(key)
                 print "------------------------------"
                 for d in self.moves_to_do:
                     print "Queue : ", d.x, " ", d.y
@@ -38,15 +38,9 @@ class Human(object, Creature):
                 super(Human, self).move(current_time)
             else:
                 self.position = self.position.round()
-                if len(self.moves_to_do) == 0:
-                    self.end_moving()
-                else:
-                    self.direction.x = self.moves_to_do[0].x
-                    self.direction.y = self.moves_to_do[0].y
-                    self.destination_pos = self.position + self.direction
-                    print "Move from queue(", len(self.moves_to_do), ") : x=", \
-                        self.moves_to_do[0].x, " y=", self.moves_to_do[0].y
-                    self.moves_to_do.pop(0)
+                self.end_moving()
+                if len(self.moves_to_do) != 0:
+                    self.start_moving(self.moves_to_do.pop(0), current_time)
 
     def shoot(self):
         self.world.sender.send(pygame.K_SPACE)
