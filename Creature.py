@@ -12,8 +12,6 @@ class Creature(Thing):
         self.cool_down = 150
 
         self.direction = Position()
-        self.next_direction = Position()
-        self.is_standing = True
         self.is_moving = False
 
     def start_moving(self, direction, last_time):
@@ -25,9 +23,8 @@ class Creature(Thing):
         self.is_moving = False
 
     def move(self, current_time):
-        if self.check_if_can_move(current_time):
-            self.position += self.direction * (float(current_time - self.last_time) / self.cool_down)
-            self.last_time = current_time
+        self.position += self.direction * (float(current_time - self.last_time) / self.cool_down)
+        self.last_time = current_time
 
     def check_if_can_move(self, current_time):
         if self.is_moving:

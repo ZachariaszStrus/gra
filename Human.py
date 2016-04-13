@@ -10,7 +10,17 @@ class Human(object, Creature):
         Creature.__init__(self, position, appearance, world)
 
     def start_moving(self, direction, current_time):
-        self.position += direction
+        if not self.is_moving:
+            self.direction = direction
+            if self.check_if_can_move(self.position + self.direction):
+                self.is_moving = True
+
+    def move(self, current_time):
+        if not self.position.is_almost_rounded():
+            super(Human, self).move(current_time)
+        else:
+            self.position = self.position.round()
+            self.end_moving()
 
     def shoot(self, current_time):
         self.world.bullets.append(Bullet(Position(self.position.x, self.position.y),

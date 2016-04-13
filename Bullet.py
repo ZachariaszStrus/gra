@@ -4,7 +4,7 @@ from Human import *
 from Creature import *
 
 
-class Bullet(Creature):
+class Bullet(object, Creature):
     def get_image(self):
         dom_tree = minidom.parse('textures.xml')
         c_nodes = dom_tree.childNodes
@@ -17,8 +17,7 @@ class Bullet(Creature):
 
     def move(self, current_time):
         if self.check_if_can_move(current_time):
-            self.position += self.direction * (float(current_time - self.last_time) / self.cool_down)
-            self.last_time = current_time
+            super(Bullet, self).move(current_time)
         else:
             self.world.bullets.remove(self)
 

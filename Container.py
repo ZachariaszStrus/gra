@@ -31,11 +31,6 @@ class Container:
     def move_other_player(self, i, key):
         self.creatures[i].start_moving(Direction.get_direction_by_key(key), pygame.time.get_ticks())
 
-    def stop_other_player(self, i, key):
-        self.creatures[i].end_moving(Direction.get_direction_by_key(key))
-
-    def update_player_position(self, i, position):
-        self.creatures[i].position = position
 
     def read_from_xml(self):
         dom_tree = minidom.parse('container.xml')
@@ -77,5 +72,8 @@ class Container:
     def move_creatures(self, current_time):
         for bullet in self.bullets:
             bullet.move(current_time)
+
+        for human in self.creatures:
+            human.move(current_time)
 
 
