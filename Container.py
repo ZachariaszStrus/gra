@@ -75,9 +75,6 @@ class Container:
             return None
 
     def move_creatures(self, current_time):
-        for human in self.creatures:
-                human.move(current_time)
-
         for bullet in self.bullets:
             bullet.move(current_time)
 

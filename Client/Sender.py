@@ -12,21 +12,16 @@ class Sender:
         if not self.socket.connect(address):
             return
 
-    def send(self, t, k):
-        self.socket.send(bytes(self.get_key_message(t, k)))
-        # print "Sent : ", self.get_key_message(t, k)
+    def send(self, k):
+        self.socket.send(bytes(self.get_key_message(k)))
+        # print "Sent : ", self.get_key_message(k)
 
     def close(self):
         self.socket.close()
 
-    def get_key_message(self, t, k):
+    def get_key_message(self, k):
         res = bytearray(1)
-        if t == pygame.KEYDOWN:
-            res = Sender.key_array[k]
-        elif t == pygame.KEYUP:
-            res = Sender.key_array[k]+len(Sender.key_array)
-        else:
-            res = False
+        res = Sender.key_array[k]
 
         return res
 

@@ -4,7 +4,6 @@ from Human import *
 from Creature import *
 
 
-
 class Bullet(Creature):
     def get_image(self):
         dom_tree = minidom.parse('textures.xml')

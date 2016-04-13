@@ -55,13 +55,6 @@ class Listener (threading.Thread):
                     # print "Player id : ", player_id
                     # print "Key : ", event_key
                     self.do_event(player_id, event_key)
-                elif size == 3:
-                    player_id = int(buf[0])-48
-                    x = int(buf[1])
-                    y = int(buf[2])
-                    print "Player id : ", player_id
-                    print "Position update : ", x, " ", y
-                    self.container.update_player_position(player_id, Position(x, y))
 
         self.socket.close()
 
@@ -83,8 +76,6 @@ class Listener (threading.Thread):
     def do_event(self, player_id, res):
         if res < len(Listener.key_array):
             self.container.move_other_player(player_id, Listener.key_array[res])
-        else:
-            self.container.stop_other_player(player_id, Listener.key_array[res-len(Listener.key_array)])
 
 
 
