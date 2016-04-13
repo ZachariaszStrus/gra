@@ -48,14 +48,14 @@ class Listener (threading.Thread):
         while self.running:
             buf = bytearray(4)
             size = self.socket.recv_into(buf)
-            if self.socket.recv_into(buf) > 0:
+            if size > 0:
                 if size == 2:
                     player_id = int(buf[0])-48
                     event_key = int(buf[1]) - 48
                     print "Player id : ", player_id
                     print "Key : ", event_key
                     self.do_event(player_id, event_key)
-                elif size == 2:
+                elif size == 3:
                     player_id = int(buf[0])-48
                     x = int(buf[1]) - 48
                     y = int(buf[1]) - 48
@@ -81,22 +81,10 @@ class Listener (threading.Thread):
         self.container.player_id = int(results[1])
 
     def do_event(self, player_id, res):
-        if res == 0:
-            self.container.move_other_player(player_id, pygame.K_RIGHT)
-        elif res == 1:
-            self.container.move_other_player(player_id, pygame.K_LEFT)
-        elif res == 2:
-            self.container.move_other_player(player_id, pygame.K_UP)
-        elif res == 3:
-            self.container.move_other_player(player_id, pygame.K_DOWN)
-        elif res == 4:
-            self.container.stop_other_player(player_id, pygame.K_RIGHT)
-        elif res == 5:
-            self.container.stop_other_player(player_id, pygame.K_LEFT)
-        elif res == 6:
-            self.container.stop_other_player(player_id, pygame.K_UP)
-        elif res == 7:
-            self.container.stop_other_player(player_id, pygame.K_DOWN)
+        if res < len(Listener.key_array):
+            self.container.move_other_player(player_id, Listener.key_array[res])
+        else:
+            self.container.stop_other_player(player_id, Listener.key_array[res-len(Listener.key_array)])
 
 
 
