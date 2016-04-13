@@ -14,6 +14,7 @@ class Human(object, Creature):
         Creature.__init__(self, position, self.get_image(), world)
         self.destination_pos = Position()
         self.moves_to_do = list()
+        self.points = 0
 
     def get_image(self):
         dom_tree = minidom.parse('textures.xml')
@@ -43,17 +44,6 @@ class Human(object, Creature):
                 self.end_moving()
                 if len(self.moves_to_do) != 0:
                     self.start_moving(self.moves_to_do.pop(0), current_time)
-
-    def check_if_can_move(self, new_position):
-        if super(Human, self).check_if_can_move(new_position):
-            for creature in self.world.creatures:
-                if creature == self:
-                    continue
-                if new_position == creature.position.round():
-                    return False
-            return True
-        else:
-            return False
 
     def shoot(self):
         if self == self.world.player:

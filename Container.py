@@ -11,7 +11,7 @@ class Container:
         self.player_id = 0
         self.player = None
 
-        self.number_of_players = 0
+        self.number_of_players = 4
 
         self.sender = sender
 

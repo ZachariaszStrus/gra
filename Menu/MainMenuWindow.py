@@ -1,4 +1,5 @@
 import pygame
+import sys
 
 from Client.Listener import Listener
 from Client.Sender import Sender
@@ -10,7 +11,7 @@ from Position import Position
 
 class MainMenuWindow:
     def __init__(self):
-        self.windowSizeX = 550
+        self.windowSizeX = 750
         self.windowSizeY = 550
 
         pygame.init()
@@ -28,15 +29,17 @@ class MainMenuWindow:
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if self.start_game_button.is_clicked():
                         self.start_game()
+                    elif self.exit_game_button.is_clicked():
                         exit_game = True
 
         pygame.quit()
+        sys.exit()
 
     def start_game(self):
         self.draw_waiting_screen()
 
         sender = Sender()
-        container = Container(sender)
+        container = Container(None)
 
         listener = Listener(container)
         listener.receive_map()
@@ -44,16 +47,25 @@ class MainMenuWindow:
 
         Display(self.gameDisplay, container)
         listener.stop()
+        sender.close()
 
     def add_controls(self):
-        self.start_game_button = Button((255, 255, 255), (0, 0, 0),
-                                        Position(50, 50), (450, 150),
+        self.start_game_button = Button((150, 150, 150), (0, 0, 0),
+                                        Position(self.windowSizeX/10, self.windowSizeY/10),
+                                        (self.windowSizeX*8/10, self.windowSizeY*2/10),
                                         "Start game",
+                                        self.gameDisplay)
+
+        self.exit_game_button = Button((150, 150, 150), (0, 0, 0),
+                                        Position(self.windowSizeX/10, self.windowSizeY*3/10 + 5),
+                                        (self.windowSizeX*8/10, self.windowSizeY*2/10),
+                                        "Exit game",
                                         self.gameDisplay)
 
     def draw_menu(self):
         self.gameDisplay.fill((0, 0, 0))
         self.start_game_button.draw()
+        self.exit_game_button.draw()
         pygame.display.update()
 
     def draw_waiting_screen(self):

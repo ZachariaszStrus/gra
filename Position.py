@@ -47,3 +47,7 @@ class Position:
     def is_almost_at(self, n):
         return abs(self.x - n.x) < Position.epsilon and abs(self.y - n.y) < Position.epsilon
 
+    def is_in_area(self, p1, p2):
+        return p1.x <= self.x <= p2.x and p1.y >= self.y >= p2.y
+
+
