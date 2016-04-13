@@ -5,7 +5,6 @@ class Creature(Thing):
     def __init__(self, position, appearance, world):
         Thing.__init__(self, appearance)
         self.position = position
-
         self.world = world
 
         self.last_time = None
@@ -27,13 +26,12 @@ class Creature(Thing):
         self.last_time = current_time
 
     def check_if_can_move(self, current_time):
-        if self.is_moving:
-            new_position = self.position + self.direction * (float(current_time - self.last_time) / self.cool_down)
-            new_position = (new_position + self.direction).round()
-            if self.is_outside_of_map(new_position) or self.world.map_of_obstacles[int(new_position.y)][int(new_position.x)]:
-                self.is_moving = False
-                return False
-        return True
+        new_position = self.position + self.direction
+        if self.is_outside_of_map(new_position) or \
+                self.world.map_of_obstacles[int(new_position.y)][int(new_position.x)]:
+            return False
+        else:
+            return True
 
     def is_outside_of_map(self, new_position):
         return new_position.x < 0 or new_position.y < 0 or \

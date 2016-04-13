@@ -12,7 +12,8 @@ class Human(object, Creature):
     def start_moving(self, direction, current_time):
         if not self.is_moving:
             self.direction = direction
-            if self.check_if_can_move(self.position + self.direction):
+            if self.check_if_can_move(current_time):
+                self.last_time = current_time
                 self.is_moving = True
 
     def move(self, current_time):
