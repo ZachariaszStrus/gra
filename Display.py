@@ -43,7 +43,7 @@ class Display:
                 elif event.type == pygame.KEYDOWN:
                     new_direction = Direction.get_direction_by_key(event.key)
                     if new_direction:
-                        self.player.start_moving(new_direction, event.key)
+                        self.player.start_moving(event.key, pygame.time.get_ticks())
                     elif event.key == pygame.K_ESCAPE:
                         exit_game = True
                     elif event.key == pygame.K_SPACE:

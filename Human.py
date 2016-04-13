@@ -1,5 +1,6 @@
 import math
 
+from Direction import  Direction
 from Bullet import Bullet
 from Creature import Creature
 from Position import Position
@@ -10,14 +11,16 @@ class Human(object, Creature):
         Creature.__init__(self, position, appearance, world)
         self.destination_pos = Position()
 
-    def start_moving(self, direction, current_time, key):
+    def start_moving(self, key, current_time):
         if not self.is_moving:
+            direction = Direction.get_direction_by_key(key)
             self.direction = direction
             if self.check_if_can_move(current_time):
                 self.destination_pos = self.position + self.direction
                 self.last_time = current_time
                 self.is_moving = True
-                self.world.sender.send(key)
+                if self == self.world.player:
+                    self.world.sender.send(key)
 
     def move(self, current_time):
         if self.is_moving:

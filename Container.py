@@ -29,7 +29,7 @@ class Container:
             self.creatures.append(Human(self.corner(i), image, self))
 
     def move_other_player(self, i, key):
-        self.creatures[i].start_moving(Direction.get_direction_by_key(key), pygame.time.get_ticks())
+        self.creatures[i].start_moving(key, pygame.time.get_ticks())
 
 
     def read_from_xml(self):
