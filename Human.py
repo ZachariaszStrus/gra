@@ -28,6 +28,7 @@ class Human(object, Creature):
         else:
             if self != self.world.player:
                 self.moves_to_do.append(direction)
+                print self.moves_to_do
             return False
 
     def move(self, current_time):
@@ -40,6 +41,7 @@ class Human(object, Creature):
                     self.end_moving()
                 else:
                     self.direction = self.moves_to_do[0]
+                    print "Move from queue : x=", self.direction.x," y=", self.direction.y
                     self.moves_to_do.pop(0)
 
     def shoot(self):
@@ -47,4 +49,4 @@ class Human(object, Creature):
         self.world.bullets.append(Bullet(Position(self.position.x, self.position.y),
                                          self.world,
                                          Position(self.direction.x, self.direction.y),
-                                         self.last_time))
+                                         pygame.time.get_ticks()))
