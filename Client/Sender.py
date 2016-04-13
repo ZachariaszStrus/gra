@@ -14,7 +14,7 @@ class Sender:
 
     def send(self, t, k):
         self.socket.send(bytes(self.get_key_message(t, k)))
-        print "Sent : ", self.get_key_message(t, k)
+        # print "Sent : ", self.get_key_message(t, k)
 
     def close(self):
         self.socket.close()
@@ -34,6 +34,7 @@ class Sender:
         res = bytearray(2)
         res[0] = int(pos.x)
         res[1] = int(pos.y)
+        print "Position sent : ", int(pos.x), " ", int(pos.y)
         self.socket.send(res)
 
 
