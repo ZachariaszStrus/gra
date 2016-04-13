@@ -57,8 +57,8 @@ class Listener (threading.Thread):
                     self.do_event(player_id, event_key)
                 elif size == 3:
                     player_id = int(buf[0])-48
-                    x = int(buf[1]) - 48
-                    y = int(buf[1]) - 48
+                    x = int(buf[1])
+                    y = int(buf[2])
                     print "Player id : ", player_id
                     print "Position update : ", x, " ", y
                     self.container.update_player_position(player_id, Position(x, y))
