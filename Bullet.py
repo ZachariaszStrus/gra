@@ -39,7 +39,7 @@ class Bullet(object, Creature):
             if creature == self.owner:
                 continue
             if new_position == creature.position:
-                self.world.restart()
+                creature.restart()
                 return True
         return False
 

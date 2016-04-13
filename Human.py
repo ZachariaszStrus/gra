@@ -24,7 +24,7 @@ class Human(object, Creature):
         direction = Direction.get_direction_by_key(key)
         if not self.is_moving:
             self.direction = direction
-            if self.check_if_can_move(current_time):
+            if self.check_if_can_move(self.position + self.direction):
                 self.destination_pos = self.position + self.direction
                 self.last_time = current_time
                 self.is_moving = True
@@ -44,6 +44,15 @@ class Human(object, Creature):
                 if len(self.moves_to_do) != 0:
                     self.start_moving(self.moves_to_do.pop(0), current_time)
 
+    def check_if_can_move(self, new_position):
+        super(Human, self).check_if_can_move(new_position)
+        for creature in self.world.creatures:
+            if creature == self:
+                continue
+            if new_position == creature.position.round():
+                return False
+        return True
+
     def shoot(self):
         if self == self.world.player:
             self.world.sender.send(pygame.K_SPACE)
@@ -54,4 +63,4 @@ class Human(object, Creature):
                                          self))
 
     def restart(self):
-        self.position = self.world.corner(self.world.coreatures.index(self))
+        self.position = self.world.corner(self.world.creatures.index(self))

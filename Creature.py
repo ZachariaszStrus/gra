@@ -25,8 +25,7 @@ class Creature(Thing):
         self.position += self.direction * (float(current_time - self.last_time) / self.cool_down)
         self.last_time = current_time
 
-    def check_if_can_move(self, current_time):
-        new_position = self.position + self.direction
+    def check_if_can_move(self, new_position):
         if self.is_outside_of_map(new_position) or \
                 self.world.map_of_obstacles[int(new_position.y)][int(new_position.x)]:
             return False
