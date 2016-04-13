@@ -5,10 +5,11 @@ from Creature import *
 
 
 class Bullet(object, Creature):
-    def __init__(self, human_position, world, direction, last_time):
+    def __init__(self, human_position, world, direction, last_time, owner):
         Creature.__init__(self, human_position, self.get_image(), world)
         self.start_moving(direction, last_time)
         self.cool_down = 100
+        self.owner = owner
 
     def get_image(self):
         dom_tree = minidom.parse('textures.xml')
@@ -35,12 +36,11 @@ class Bullet(object, Creature):
 
     def collision_with_creatures(self, new_position):
         for creature in self.world.creatures:
-            if creature == self.world.player:
+            if creature == self.owner:
                 continue
             if new_position == creature.position:
                 self.world.creatures.remove(creature)
                 return True
-
         return False
 
     def collision_with_obstacles(self, new_position):

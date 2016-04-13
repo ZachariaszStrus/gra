@@ -46,8 +46,9 @@ class Human(object, Creature):
 
     def shoot(self):
         if self == self.world.player:
-            pass  # self.world.sender.send(pygame.K_SPACE)
+            self.world.sender.send(pygame.K_SPACE)
         self.world.bullets.append(Bullet(Position(self.position.x, self.position.y),
                                          self.world,
                                          Position(self.direction.x, self.direction.y),
-                                         pygame.time.get_ticks()))
+                                         pygame.time.get_ticks(),
+                                         self))
