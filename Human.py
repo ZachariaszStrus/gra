@@ -39,11 +39,12 @@ class Human(object, Creature):
                 if len(self.moves_to_do) == 0:
                     self.end_moving()
                 else:
-                    self.direction = self.moves_to_do.pop(0)
+                    self.direction = self.moves_to_do[0]
+                    self.moves_to_do.pop(0)
 
-    def shoot(self, current_time):
+    def shoot(self):
         self.world.sender.send(pygame.K_SPACE)
         self.world.bullets.append(Bullet(Position(self.position.x, self.position.y),
                                          self.world,
                                          Position(self.direction.x, self.direction.y),
-                                         current_time))
+                                         self.last_time))

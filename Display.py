@@ -47,7 +47,7 @@ class Display:
                     elif event.key == pygame.K_ESCAPE:
                         exit_game = True
                     elif event.key == pygame.K_SPACE:
-                        self.player.shoot(pygame.time.get_ticks())
+                        self.player.shoot()
 
             self.container.move_creatures(pygame.time.get_ticks())
 
