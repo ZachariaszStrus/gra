@@ -35,7 +35,7 @@ class MainMenuWindow:
     def start_game(self):
         self.draw_waiting_screen()
         sender = Sender()
-        container = Container(sender)
+        container = Container()
 
         listener = Listener(container)
         listener.receive_map()

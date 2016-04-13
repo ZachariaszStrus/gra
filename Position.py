@@ -44,3 +44,6 @@ class Position:
         return abs(self.x - round(self.x)) <= Position.epsilon and \
                     abs(self.y - round(self.y)) <= Position.epsilon
 
+    def is_almost_at(self, n):
+        return abs(self.x - n.x) < Position.epsilon and abs(self.y - n.y) < Position.epsilon
+
