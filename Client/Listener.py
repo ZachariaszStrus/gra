@@ -37,7 +37,7 @@ class Listener (threading.Thread):
         buf = bytearray(4)
         results = list()
 
-        while len(results) < 2:
+        while len(results) < 3:
             if self.socket.recv_into(buf) > 0:
                 num = struct.unpack("!i", buf)[0]
                 results.append(self.get_string(num))
@@ -45,8 +45,9 @@ class Listener (threading.Thread):
         map_file = open("container.xml", "w")
         map_file.write(results[0])
         map_file.close()
-        print int(results[1])
+
         self.container.player_id = int(results[1])
+        self.container.number_of_players = int(results[2])
 
     def get_string(self, i):
         size = i

@@ -11,6 +11,8 @@ class Container:
         self.player_id = 0
         self.player = None
 
+        self.number_of_players = 0
+
         self.sender = sender
 
         self.creatures = list()
@@ -22,7 +24,7 @@ class Container:
         self.player = self.creatures[self.player_id]
 
     def get_players(self):
-        for i in range(4):
+        for i in range(self.number_of_players):
             self.creatures.append(Human(self.corner(i), self))
 
     def handle_server_input(self, player, key):
