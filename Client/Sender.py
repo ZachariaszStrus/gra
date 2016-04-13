@@ -32,8 +32,8 @@ class Sender:
 
     def send_position(self, pos):
         res = bytearray(2)
-        res[0] = pos.x
-        res[1] = pos.y
-        self.socket.send(res)
+        res[0] = bytes(pos.x)
+        res[1] = bytes(pos.y)
+        self.socket.send(bytes(res))
 
 
