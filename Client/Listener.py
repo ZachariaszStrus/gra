@@ -22,6 +22,33 @@ class Listener (threading.Thread):
     def stop(self):
         self.running = False
 
+    def run(self):
+        while self.running:
+            buf = bytearray(4)
+            size = self.socket.recv_into(buf)
+            if size > 0:
+                if size == 2:
+                    player = int(buf[0])-48
+                    key = Listener.key_array[int(buf[1]) - 48]
+                    self.container.handle_server_input(player, key)
+
+        self.socket.close()
+
+    def receive_map(self):
+        buf = bytearray(4)
+        results = list()
+
+        while len(results) < 2:
+            if self.socket.recv_into(buf) > 0:
+                num = struct.unpack("!i", buf)[0]
+                results.append(self.get_string(num))
+
+        map_file = open("container.xml", "w")
+        map_file.write(results[0])
+        map_file.close()
+        print int(results[1])
+        self.container.player_id = int(results[1])
+
     def get_string(self, i):
         size = i
         tab = list()
@@ -44,40 +71,7 @@ class Listener (threading.Thread):
 
         return result
 
-    def run(self):
-        while self.running:
-            buf = bytearray(4)
-            size = self.socket.recv_into(buf)
-            if size > 0:
-                if size == 2:
-                    player_id = int(buf[0])-48
-                    event_key = int(buf[1]) - 48
-                    # print "Player id : ", player_id
-                    # print "Key : ", event_key
-                    self.do_event(player_id, event_key)
 
-        self.socket.close()
-
-    def receive_map(self):
-        buf = bytearray(4)
-        results = list()
-
-        while len(results) < 2:
-            if self.socket.recv_into(buf) > 0:
-                num = struct.unpack("!i", buf)[0]
-                results.append(self.get_string(num))
-
-        map_file = open("container.xml", "w")
-        map_file.write(results[0])
-        map_file.close()
-        print int(results[1])
-        self.container.player_id = int(results[1])
-
-    def do_event(self, player_id, res):
-        if res < 4:
-            self.container.move_other_player(player_id, Listener.key_array[res])
-        elif res == 4:
-            self.container.shoot_other_player(player_id)
 
 
 

@@ -22,17 +22,14 @@ class Container:
         self.player = self.creatures[self.player_id]
 
     def get_players(self):
-        dom_tree = minidom.parse('textures.xml')
-        c_nodes = dom_tree.childNodes
-        image = c_nodes[0].getElementsByTagName("human")[0].childNodes[0].toxml()
         for i in range(4):
-            self.creatures.append(Human(self.corner(i), image, self))
+            self.creatures.append(Human(self.corner(i), self))
 
-    def move_other_player(self, i, key):
-        self.creatures[i].start_moving(key, pygame.time.get_ticks())
-
-    def shoot_other_player(self, i):
-        self.creatures[i].shoot()
+    def handle_server_input(self, player, key):
+        if Direction.get_direction_by_key(key):
+            self.creatures[player].start_moving(key, pygame.time.get_ticks())
+        elif key == pygame.K_SPACE:
+            self.creatures[player].shoot()
 
     def read_from_xml(self):
         dom_tree = minidom.parse('container.xml')

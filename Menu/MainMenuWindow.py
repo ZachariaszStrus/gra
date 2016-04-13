@@ -34,14 +34,16 @@ class MainMenuWindow:
 
     def start_game(self):
         self.draw_waiting_screen()
+
         sender = Sender()
         container = Container(sender)
 
         listener = Listener(container)
         listener.receive_map()
+        listener.start()
 
-        container.load_world()
-        Display(self.gameDisplay, container, listener, sender)
+        Display(self.gameDisplay, container)
+        listener.stop()
 
     def add_controls(self):
         self.start_game_button = Button((255, 255, 255), (0, 0, 0),

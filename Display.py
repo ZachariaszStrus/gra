@@ -5,15 +5,12 @@ from Direction import *
 
 
 class Display:
-    def __init__(self, display, container, listener, sender):
+    def __init__(self, display, container):
         self.windowSizeX = 550
         self.windowSizeY = 550
         self.textures = []
         self.container = container
-
-        self.listener = listener
-        self.listener.start()
-        self.sender = sender
+        self.container.load_world()
 
         self.gameDisplay = display
         self.clock = pygame.time.Clock()
@@ -56,6 +53,7 @@ class Display:
     def repaint(self, container):
         self.gameDisplay.fill((0, 0, 0))
 
+        # drawing map
         map_position = self.centerOfScreen - self.player.position
         for y in range(container.size):
             for x in range(container.size):
@@ -68,13 +66,14 @@ class Display:
                     image = self.textures[image_id]
                     self.gameDisplay.blit(image, (self.textureSize * field_position.x,
                                                   self.textureSize * field_position.y))
-
+        # drawing players
         for human in container.creatures:
             position = human.position + map_position
             self.gameDisplay.blit(pygame.image.load(human.appearance),
                                   (position.x * self.textureSize,
                                    position.y * self.textureSize))
 
+        # drawing bullets
         for bullet in container.bullets:
             bullet_position = bullet.position - self.player.position + self.centerOfScreen
             self.gameDisplay.blit(pygame.image.load(bullet.appearance),

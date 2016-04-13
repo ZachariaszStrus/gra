@@ -1,4 +1,5 @@
 import math
+from xml.dom import minidom
 
 import pygame
 
@@ -9,13 +10,17 @@ from Position import Position
 
 
 class Human(object, Creature):
-    def __init__(self, position, appearance, world):
-        Creature.__init__(self, position, appearance, world)
+    def __init__(self, position, world):
+        Creature.__init__(self, position, self.get_image(), world)
         self.destination_pos = Position()
         self.moves_to_do = list()
 
-    def start_moving(self, key, current_time):
-        direction = Direction.get_direction_by_key(key)
+    def get_image(self):
+        dom_tree = minidom.parse('textures.xml')
+        c_nodes = dom_tree.childNodes
+        return c_nodes[0].getElementsByTagName("human")[0].childNodes[0].toxml()
+
+    def start_moving(self, direction, current_time):
         if not self.is_moving:
             self.direction = direction
             if self.check_if_can_move(current_time):
@@ -23,14 +28,10 @@ class Human(object, Creature):
                 self.last_time = current_time
                 self.is_moving = True
                 if self == self.world.player:
-                    self.world.sender.send(key)
+                    self.world.sender.send(direction)
         else:
             if self != self.world.player:
-                self.moves_to_do.append(key)
-                print "------------------------------"
-                for d in self.moves_to_do:
-                    print "Queue : ", d.x, " ", d.y
-                print "------------------------------"
+                self.moves_to_do.append(direction)
 
     def move(self, current_time):
         if self.is_moving:
