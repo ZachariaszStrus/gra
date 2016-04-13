@@ -24,12 +24,13 @@ class Human(object, Creature):
                 self.is_moving = True
                 if self == self.world.player:
                     self.world.sender.send(key)
-            return True
         else:
             if self != self.world.player:
                 self.moves_to_do.append(direction)
-                print self.moves_to_do
-            return False
+                print "------------------------------"
+                for d in self.moves_to_do:
+                    print "Queue : ", d.x, " ", d.y
+                print "------------------------------"
 
     def move(self, current_time):
         if self.is_moving:
@@ -40,9 +41,11 @@ class Human(object, Creature):
                 if len(self.moves_to_do) == 0:
                     self.end_moving()
                 else:
-                    self.direction = self.moves_to_do[0]
-                    print "Move from queue : x=", self.direction.x," y=", self.direction.y
+                    self.direction.x = self.moves_to_do[0].x
+                    self.direction.y = self.moves_to_do[0].y
+                    print "Move from queue : x=", self.direction.x, " y=", self.direction.y
                     self.moves_to_do.pop(0)
+                    print "Queue after pop : x=", self.direction.x, " y=", self.direction.y
 
     def shoot(self):
         self.world.sender.send(pygame.K_SPACE)

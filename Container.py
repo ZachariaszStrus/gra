@@ -29,8 +29,7 @@ class Container:
             self.creatures.append(Human(self.corner(i), image, self))
 
     def move_other_player(self, i, key):
-        if not self.creatures[i].start_moving(key, pygame.time.get_ticks()):
-            print "Ups !!!"
+        self.creatures[i].start_moving(key, pygame.time.get_ticks())
 
     def shoot_other_player(self, i):
         self.creatures[i].shoot()
