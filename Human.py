@@ -20,7 +20,8 @@ class Human(object, Creature):
         c_nodes = dom_tree.childNodes
         return c_nodes[0].getElementsByTagName("human")[0].childNodes[0].toxml()
 
-    def start_moving(self, direction, current_time):
+    def start_moving(self, key, current_time):
+        direction = Direction.get_direction_by_key(key)
         if not self.is_moving:
             self.direction = direction
             if self.check_if_can_move(current_time):
@@ -28,7 +29,7 @@ class Human(object, Creature):
                 self.last_time = current_time
                 self.is_moving = True
                 if self == self.world.player:
-                    self.world.sender.send(direction)
+                    self.world.sender.send(key)
         else:
             if self != self.world.player:
                 self.moves_to_do.append(direction)

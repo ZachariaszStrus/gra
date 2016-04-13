@@ -21,8 +21,7 @@ class Sender:
 
     def get_key_message(self, k):
         res = bytearray(1)
-        res = Sender.key_array[k]
-
+        res[0] = Sender.key_array[k]
         return res
 
     def send_position(self, pos):
