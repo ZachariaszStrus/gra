@@ -34,6 +34,9 @@ class Container:
     def stop_other_player(self, i, key):
         self.creatures[i].end_moving(Direction.get_direction_by_key(key))
 
+    def update_player_position(self, i, position):
+        self.creatures[i].position = position
+
     def read_from_xml(self):
         dom_tree = minidom.parse('container.xml')
         nodes = dom_tree.childNodes

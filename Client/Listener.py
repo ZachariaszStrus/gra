@@ -4,8 +4,12 @@ import struct
 
 import pygame
 
+from Position import Position
+
 
 class Listener (threading.Thread):
+    key_array = [pygame.K_RIGHT, pygame.K_LEFT, pygame.K_UP, pygame.K_DOWN]
+
     def __init__(self, container, address=("25.37.158.69", 9999)):
         threading.Thread.__init__(self)
 
@@ -43,12 +47,21 @@ class Listener (threading.Thread):
     def run(self):
         while self.running:
             buf = bytearray(4)
+            size = self.socket.recv_into(buf)
             if self.socket.recv_into(buf) > 0:
-                player_id = int(buf[0])-48
-                event_key = int(buf[1]) - 48
-                print "Player id : ", player_id
-                print "Key : ", event_key
-                self.do_event(player_id, event_key)
+                if size == 2:
+                    player_id = int(buf[0])-48
+                    event_key = int(buf[1]) - 48
+                    print "Player id : ", player_id
+                    print "Key : ", event_key
+                    self.do_event(player_id, event_key)
+                elif size == 2:
+                    player_id = int(buf[0])-48
+                    x = int(buf[1]) - 48
+                    y = int(buf[1]) - 48
+                    print "Player id : ", player_id
+                    print "Position update : ", x, " ", y
+                    self.container.update_player_position(player_id, Position(x, y))
 
         self.socket.close()
 
