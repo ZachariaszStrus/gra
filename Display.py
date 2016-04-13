@@ -50,11 +50,6 @@ class Display:
                     elif event.key == pygame.K_SPACE:
                         self.player.shoot(pygame.time.get_ticks())
 
-                elif event.type == pygame.KEYUP:
-                    self.sender.send(event.key)
-                    if Direction.get_direction_by_key(event.key):
-                        self.player.end_moving(Direction.get_direction_by_key(event.key))
-
             self.container.move_creatures(pygame.time.get_ticks())
 
         self.listener.stop()

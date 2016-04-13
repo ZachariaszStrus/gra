@@ -52,8 +52,8 @@ class Listener (threading.Thread):
                 if size == 2:
                     player_id = int(buf[0])-48
                     event_key = int(buf[1]) - 48
-                    # print "Player id : ", player_id
-                    # print "Key : ", event_key
+                    print "Player id : ", player_id
+                    print "Key : ", event_key
                     self.do_event(player_id, event_key)
 
         self.socket.close()
