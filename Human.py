@@ -21,6 +21,9 @@ class Human(object, Creature):
                 self.is_moving = True
                 if self == self.world.player:
                     self.world.sender.send(key)
+            return True
+        else:
+            return False
 
     def move(self, current_time):
         if self.is_moving:

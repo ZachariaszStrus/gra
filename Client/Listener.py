@@ -52,8 +52,8 @@ class Listener (threading.Thread):
                 if size == 2:
                     player_id = int(buf[0])-48
                     event_key = int(buf[1]) - 48
-                    print "Player id : ", player_id
-                    print "Key : ", event_key
+                    # print "Player id : ", player_id
+                    # print "Key : ", event_key
                     self.do_event(player_id, event_key)
 
         self.socket.close()
@@ -74,8 +74,10 @@ class Listener (threading.Thread):
         self.container.player_id = int(results[1])
 
     def do_event(self, player_id, res):
-        if res < len(Listener.key_array):
+        if res < 4:
             self.container.move_other_player(player_id, Listener.key_array[res])
+        elif res == 4:
+            self.container.shoot_other_player(player_id)
 
 
 

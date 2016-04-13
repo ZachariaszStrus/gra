@@ -29,8 +29,11 @@ class Container:
             self.creatures.append(Human(self.corner(i), image, self))
 
     def move_other_player(self, i, key):
-        self.creatures[i].start_moving(key, pygame.time.get_ticks())
+        if not self.creatures[i].start_moving(key, pygame.time.get_ticks()):
+            print "Ups !!!"
 
+    def shoot_other_player(self, i):
+        self.creatures[i].shoot()
 
     def read_from_xml(self):
         dom_tree = minidom.parse('container.xml')
