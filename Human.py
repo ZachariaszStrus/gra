@@ -31,6 +31,7 @@ class Human(object, Creature):
                 self.position = self.position.round()
                 self.is_moving = False
                 self.is_standing = True
+                self.world.sender.send_position(self.position)
                 if self.direction != self.next_direction:
                     self.start_moving(self.next_direction, current_time)
 

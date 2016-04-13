@@ -34,10 +34,10 @@ class MainMenuWindow:
 
     def start_game(self):
         self.draw_waiting_screen()
-        container = Container()
+        sender = Sender()
+        container = Container(sender)
 
         listener = Listener(container)
-        sender = Sender()
         listener.receive_map()
 
         container.load_world()

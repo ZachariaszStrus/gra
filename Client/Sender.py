@@ -5,6 +5,7 @@ import pygame
 
 
 class Sender:
+    key_array = {pygame.K_RIGHT: 0, pygame.K_LEFT: 1, pygame.K_UP: 2, pygame.K_DOWN: 3}
 
     def __init__(self, address=("25.37.158.69", 9998)):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -12,34 +13,27 @@ class Sender:
             return
 
     def send(self, t, k):
-        if self.get_key_index(t, k):
-            self.socket.send(bytes(self.get_key_index(t, k)))
-            print "Sent : ", self.get_key_index(t, k)
+        self.socket.send(bytes(self.get_key_message(t, k)))
+        print "Sent : ", self.get_key_message(t, k)
 
     def close(self):
         self.socket.close()
 
-    def get_key_index(self, t, k):
+    def get_key_message(self, t, k):
         res = bytearray(1)
         if t == pygame.KEYDOWN:
-            if k == pygame.K_RIGHT:
-                res = 0
-            elif k == pygame.K_LEFT:
-                res = 1
-            elif k == pygame.K_UP:
-                res = 2
-            elif k == pygame.K_DOWN:
-                res = 3
+            res = Sender.key_array[k]
         elif t == pygame.KEYUP:
-            if k == pygame.K_RIGHT:
-                res = 4
-            elif k == pygame.K_LEFT:
-                res = 5
-            elif k == pygame.K_UP:
-                res = 6
-            elif k == pygame.K_DOWN:
-                res = 7
+            res = Sender.key_array[k]+len(Sender.key_array)
         else:
             res = False
 
         return res
+
+    def send_position(self, pos):
+        res = bytearray(2)
+        res[0] = pos.x
+        res[1] = pos.y
+        self.socket.send(res)
+
+

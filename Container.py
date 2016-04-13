@@ -4,12 +4,14 @@ from Human import Human
 
 
 class Container:
-    def __init__(self):
+    def __init__(self, sender):
         self.size = None
         self.map = None
         self.map_of_obstacles = None
         self.player_id = 0
         self.player = None
+
+        self.sender = sender
 
         self.creatures = list()
         self.bullets = list()
@@ -30,7 +32,7 @@ class Container:
         self.creatures[i].start_moving(Direction.get_direction_by_key(key), pygame.time.get_ticks())
 
     def stop_other_player(self, i, key):
-        self.creatures[i].end_moving(Direction.get_direction_by_key(key), pygame.time.get_ticks())
+        self.creatures[i].end_moving(Direction.get_direction_by_key(key))
 
     def read_from_xml(self):
         dom_tree = minidom.parse('container.xml')
