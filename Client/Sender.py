@@ -24,11 +24,5 @@ class Sender:
         res[0] = Sender.key_array[k]
         return res
 
-    def send_position(self, pos):
-        res = bytearray(2)
-        res[0] = int(pos.x)
-        res[1] = int(pos.y)
-        # print "Position sent : ", int(pos.x), " ", int(pos.y)
-        self.socket.send(res)
 
 

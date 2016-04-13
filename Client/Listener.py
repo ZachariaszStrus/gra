@@ -24,13 +24,12 @@ class Listener (threading.Thread):
 
     def run(self):
         while self.running:
-            buf = bytearray(4)
+            buf = bytearray(2)
             size = self.socket.recv_into(buf)
             if size > 0:
-                if size == 2:
-                    player = int(buf[0])-48
-                    key = Listener.key_array[int(buf[1]) - 48]
-                    self.container.handle_server_input(player, key)
+                player = int(buf[0])-48
+                key = Listener.key_array[int(buf[1])]
+                self.container.handle_server_input(player, key)
 
         self.socket.close()
 

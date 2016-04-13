@@ -32,7 +32,7 @@ class Human(object, Creature):
                     self.world.sender.send(key)
         else:
             if self != self.world.player:
-                self.moves_to_do.append(direction)
+                self.moves_to_do.append(key)
 
     def move(self, current_time):
         if self.is_moving:
@@ -45,7 +45,8 @@ class Human(object, Creature):
                     self.start_moving(self.moves_to_do.pop(0), current_time)
 
     def shoot(self):
-        self.world.sender.send(pygame.K_SPACE)
+        if self == self.world.player:
+            pass  # self.world.sender.send(pygame.K_SPACE)
         self.world.bullets.append(Bullet(Position(self.position.x, self.position.y),
                                          self.world,
                                          Position(self.direction.x, self.direction.y),

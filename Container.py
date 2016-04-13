@@ -29,6 +29,7 @@ class Container:
         if Direction.get_direction_by_key(key):
             self.creatures[player].start_moving(key, pygame.time.get_ticks())
         elif key == pygame.K_SPACE:
+            print "Player ", player
             self.creatures[player].shoot()
 
     def read_from_xml(self):
