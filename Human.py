@@ -52,3 +52,6 @@ class Human(object, Creature):
                                          Position(self.direction.x, self.direction.y),
                                          pygame.time.get_ticks(),
                                          self))
+
+    def restart(self):
+        self.position = self.world.corner(self.world.coreatures.index(self))

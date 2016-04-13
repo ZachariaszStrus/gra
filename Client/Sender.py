@@ -14,7 +14,6 @@ class Sender:
 
     def send(self, k):
         self.socket.send(bytes(self.get_key_message(k)))
-        # print "Sent : ", self.get_key_message(k)
 
     def close(self):
         self.socket.close()
