@@ -1,5 +1,7 @@
 import math
 
+import pygame
+
 from Direction import  Direction
 from Bullet import Bullet
 from Creature import Creature
@@ -10,10 +12,11 @@ class Human(object, Creature):
     def __init__(self, position, appearance, world):
         Creature.__init__(self, position, appearance, world)
         self.destination_pos = Position()
+        self.moves_to_do = list()
 
     def start_moving(self, key, current_time):
+        direction = Direction.get_direction_by_key(key)
         if not self.is_moving:
-            direction = Direction.get_direction_by_key(key)
             self.direction = direction
             if self.check_if_can_move(current_time):
                 self.destination_pos = self.position + self.direction
@@ -23,6 +26,8 @@ class Human(object, Creature):
                     self.world.sender.send(key)
             return True
         else:
+            if self == self.world.player:
+                self.moves_to_do.append(direction)
             return False
 
     def move(self, current_time):
@@ -30,10 +35,14 @@ class Human(object, Creature):
             if not self.position.is_almost_at(self.destination_pos):
                 super(Human, self).move(current_time)
             else:
-                self.end_moving()
                 self.position = self.position.round()
+                if len(self.moves_to_do) == 0:
+                    self.end_moving()
+                else:
+                    self.direction = self.moves_to_do.pop(0)
 
     def shoot(self, current_time):
+        self.world.sender.send(pygame.K_SPACE)
         self.world.bullets.append(Bullet(Position(self.position.x, self.position.y),
                                          self.world,
                                          Position(self.direction.x, self.direction.y),
