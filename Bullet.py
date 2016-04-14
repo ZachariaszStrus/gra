@@ -8,7 +8,7 @@ class Bullet(object, Creature):
     def __init__(self, human_position, world, direction, last_time, owner):
         Creature.__init__(self, human_position, self.get_image(), world)
         self.start_moving(direction, last_time)
-        self.cool_down = 100
+        self.cool_down = 70
         self.owner = owner
 
     def get_image(self):

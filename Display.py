@@ -1,5 +1,3 @@
-from Client.Listener import Listener
-from Client.Sender import Sender
 from Container import *
 from Direction import *
 from Menu.Text import Text
@@ -49,6 +47,10 @@ class Display:
                         self.player.shoot()
                     elif event.key == pygame.K_ESCAPE:
                         exit_game = True
+                elif event.type == pygame.KEYUP:
+                    new_direction = Direction.get_direction_by_key(event.key)
+                    if new_direction:
+                        self.player.stop_moving(event.key)
 
             self.container.move_creatures(pygame.time.get_ticks())
 

@@ -10,7 +10,7 @@ from Position import Position
 
 
 class MainMenuWindow:
-    def __init__(self):
+    def __init__(self, multiplayer):
         self.windowSizeX = 750
         self.windowSizeY = 550
 
@@ -28,26 +28,33 @@ class MainMenuWindow:
                     exit_game = True
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if self.start_game_button.is_clicked():
-                        self.start_game()
+                        self.start_game(multiplayer)
                     elif self.exit_game_button.is_clicked():
+                        exit_game = True
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
                         exit_game = True
 
         pygame.quit()
         sys.exit()
 
-    def start_game(self):
-        self.draw_waiting_screen()
+    def start_game(self, multiplayer):
+        if multiplayer:
+            self.draw_waiting_screen()
 
-        sender = Sender()
-        container = Container(sender)
+            sender = Sender()
+            container = Container(sender)
 
-        listener = Listener(container)
-        listener.receive_map()
-        listener.start()
+            listener = Listener(container)
+            listener.receive_map()
+            listener.start()
 
-        Display(self.gameDisplay, container)
-        listener.stop()
-        sender.close()
+            Display(self.gameDisplay, container)
+            listener.stop()
+            sender.close()
+        else:
+            self.draw_waiting_screen()
+            Display(self.gameDisplay, Container(None))
 
     def add_controls(self):
         self.start_game_button = Button((150, 150, 150), (0, 0, 0),
@@ -78,4 +85,4 @@ class MainMenuWindow:
         pygame.display.update()
 
 
-MainMenuWindow()
+MainMenuWindow(multiplayer=True)
