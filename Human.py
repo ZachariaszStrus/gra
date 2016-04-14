@@ -14,7 +14,7 @@ class Human(object, Creature):
         Creature.__init__(self, position, self.get_image(), world)
         self.destination_pos = Position()
         self.moves_to_do = list()
-        self.cool_down = 120
+        self.cool_down = 150
         self.key_pressed = False
         self.new_key = None
         self.points = 0
@@ -55,8 +55,6 @@ class Human(object, Creature):
     def stop_moving(self, key):
         if self.key == key:
             self.key_pressed = False
-        else:
-            self.key = key
 
     def shoot(self):
         if self == self.world.player and self.world.sender is not None:
