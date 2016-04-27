@@ -21,6 +21,7 @@ class Listener (threading.Thread):
 
     def stop(self):
         self.running = False
+        self.socket.close()
 
     def run(self):
         while self.running:
@@ -30,8 +31,6 @@ class Listener (threading.Thread):
                 player = int(buf[0])-48
                 key = Listener.key_array[int(buf[1])]
                 self.container.handle_server_input(player, key)
-
-        self.socket.close()
 
     def receive_map(self):
         buf = bytearray(4)

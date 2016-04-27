@@ -68,3 +68,9 @@ class Human(object, Creature):
 
     def restart(self):
         self.position = self.world.corner(self.world.creatures.index(self))
+        self.destination_pos = Position()
+        self.moves_to_do = list()
+        self.key_pressed = False
+        self.key = None
+        self.direction = Position()
+        self.is_moving = False
