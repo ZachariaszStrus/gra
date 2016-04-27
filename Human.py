@@ -36,7 +36,7 @@ class Human(object, Creature):
                 self.last_time = current_time
                 self.is_moving = True
                 if self == self.world.player and self.world.sender is not None:
-                    self.world.sender.send(key)
+                    self.world.sender.send(key, self.position)
         else:
             if self != self.world.player:
                 self.moves_to_do.append(key)
@@ -59,7 +59,7 @@ class Human(object, Creature):
 
     def shoot(self):
         if self == self.world.player and self.world.sender is not None:
-            self.world.sender.send(pygame.K_SPACE)
+            self.world.sender.send(pygame.K_SPACE, self.position)
         self.world.bullets.append(Bullet(Position(self.position.x, self.position.y),
                                          self.world,
                                          Position(self.direction.x, self.direction.y),
