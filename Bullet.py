@@ -38,7 +38,7 @@ class Bullet(object, Creature):
         for creature in self.world.creatures:
             if creature == self.owner:
                 continue
-            if new_position == creature.position:
+            if new_position == creature.position.round():
                 self.owner.points += 1
                 creature.restart()
                 return True
