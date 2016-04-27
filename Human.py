@@ -16,7 +16,7 @@ class Human(object, Creature):
         self.moves_to_do = list()
         self.cool_down = 150
         self.key_pressed = False
-        self.new_key = None
+        self.key = None
         self.points = 0
 
     def get_image(self):
@@ -27,7 +27,8 @@ class Human(object, Creature):
     def start_moving(self, key, current_time):
         direction = Direction.get_direction_by_key(key)
         self.key = key
-        self.key_pressed = True
+        if(self == self.world.player):
+            self.key_pressed = True
         if not self.is_moving:
             self.direction = direction
             if self.check_if_can_move(self.position + self.direction):
