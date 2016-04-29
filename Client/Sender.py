@@ -15,7 +15,7 @@ class Sender:
             return
 
     def send(self, player, k, p):
-        self.socket.send(bytes(self.get_message(player, k, p)))
+        self.socket.sendall(self.get_message(player, k, p))
 
     def close(self):
         self.socket.close()
@@ -31,7 +31,6 @@ class Sender:
         values = (player, k, p.x, p.y)
         packer = struct.Struct('I I f f')
         packed_data = packer.pack(*values)
-        binascii.hexlify(packed_data)
         print "sent : ", packed_data
         return packed_data
 

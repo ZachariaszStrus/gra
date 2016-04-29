@@ -26,10 +26,10 @@ class Listener (threading.Thread):
     def run(self):
         while self.running:
             buf = bytearray(16)
-            size = self.socket.recv_into(buf)
-            if size > 0:
+            data = self.socket.recv(16)
+            if len(data) > 0:
                 unpacker = struct.Struct('I I f f')
-                unpacked_data = unpacker.unpack(buf)
+                unpacked_data = unpacker.unpack(data)
                 print "received : ", unpacked_data
                 player_id = unpacked_data[0]
                 key = Listener.key_array[unpacked_data[1]]
