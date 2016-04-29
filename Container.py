@@ -27,7 +27,9 @@ class Container:
         for i in range(self.number_of_players):
             self.creatures.append(Human(self.corner(i), self))
 
-    def handle_server_input(self, player, key):
+    def handle_server_input(self, player, key, x, y):
+        player.x = x
+        player.y = y
         if Direction.get_direction_by_key(key):
             self.creatures[player].start_moving(key, pygame.time.get_ticks())
         elif key == pygame.K_SPACE:

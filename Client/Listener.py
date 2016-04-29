@@ -10,7 +10,7 @@ from Position import Position
 class Listener (threading.Thread):
     key_array = [pygame.K_RIGHT, pygame.K_LEFT, pygame.K_UP, pygame.K_DOWN, pygame.K_SPACE]
 
-    def __init__(self, container, address=("192.168.137.92", 9999)):
+    def __init__(self, container, address=("172.20.19.89", 9999)):
         threading.Thread.__init__(self)
 
         self.container = container
@@ -25,16 +25,16 @@ class Listener (threading.Thread):
 
     def run(self):
         while self.running:
-            buf = bytearray(2)
+            buf = bytearray(16)
             size = self.socket.recv_into(buf)
             if size > 0:
-                player = int(buf[0])-48
-                key = Listener.key_array[int(buf[1])]
-                x = int(buf[2])
-                y = int(buf[3])
-                self.container.player.position.x = x
-                self.container.player.position.y = y
-                self.container.handle_server_input(player, key)
+                unpacker = struct.Struct('I I f f')
+                unpacked_data = unpacker.unpack(buf[1:13])
+                player = unpacked_data[0]
+                key = Listener.key_array[unpacked_data[1]]
+                x = unpacked_data[2]
+                y = unpacked_data[3]
+                self.container.handle_server_input(player, key, x, y)
 
     def receive_map(self):
         buf = bytearray(4)

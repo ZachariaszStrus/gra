@@ -18,6 +18,7 @@ class Human(object, Creature):
         self.key_pressed = False
         self.key = None
         self.points = 0
+        self.previous_position = Position()
 
     def get_image(self):
         dom_tree = minidom.parse('textures.xml')
@@ -36,7 +37,7 @@ class Human(object, Creature):
                 self.last_time = current_time
                 self.is_moving = True
                 if self == self.world.player and self.world.sender is not None:
-                    self.world.sender.send(key, self.position)
+                    self.world.sender.send(self.world.player_id, key, self.position)
         else:
             if self != self.world.player:
                 self.moves_to_do.append(key)
@@ -44,6 +45,7 @@ class Human(object, Creature):
     def move(self, current_time):
         if self.is_moving:
             if not self.position.is_almost_at(self.destination_pos):
+                self.previous_position = self.position
                 super(Human, self).move(current_time)
             else:
                 self.position = self.position.round()
@@ -72,5 +74,4 @@ class Human(object, Creature):
         self.moves_to_do = list()
         self.key_pressed = False
         self.key = None
-        self.direction = Position()
         self.is_moving = False
