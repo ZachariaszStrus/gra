@@ -10,7 +10,7 @@ from Position import Position
 class Listener (threading.Thread):
     key_array = [pygame.K_RIGHT, pygame.K_LEFT, pygame.K_UP, pygame.K_DOWN, pygame.K_SPACE]
 
-    def __init__(self, container, address=("25.88.205.228", 9999)):
+    def __init__(self, container, address=("localhost", 9999)):
         threading.Thread.__init__(self)
 
         self.container = container
@@ -32,7 +32,7 @@ class Listener (threading.Thread):
                 unpacked_data = unpacker.unpack(data)
                 print "received : ", unpacked_data
                 player_id = unpacked_data[0]
-                key = Listener.key_array[unpacked_data[1]]
+                key = unpacked_data[1]
                 x = unpacked_data[2]
                 y = unpacked_data[3]
                 self.container.handle_server_input(player_id, key, x, y)

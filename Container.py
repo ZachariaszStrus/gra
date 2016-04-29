@@ -31,10 +31,10 @@ class Container:
         self.creatures[player_id].x = x
         self.creatures[player_id].y = y
         if Direction.get_direction_by_key(key):
-            self.creatures[player].start_moving(key, pygame.time.get_ticks())
+            self.creatures[player_id].start_moving(key, pygame.time.get_ticks())
         elif key == pygame.K_SPACE:
-            print "Player ", player
-            self.creatures[player].shoot()
+            print "Player ", player_id
+            self.creatures[player_id].shoot()
 
     def read_from_xml(self):
         dom_tree = minidom.parse('container.xml')

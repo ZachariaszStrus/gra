@@ -61,7 +61,7 @@ class Human(object, Creature):
 
     def shoot(self):
         if self == self.world.player and self.world.sender is not None:
-            self.world.sender.send(pygame.K_SPACE, self.position)
+            self.world.sender.send(self.world.player_id, pygame.K_SPACE, self.position)
         self.world.bullets.append(Bullet(Position(self.position.x, self.position.y),
                                          self.world,
                                          Position(self.direction.x, self.direction.y),
