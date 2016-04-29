@@ -85,4 +85,4 @@ class MainMenuWindow:
         pygame.display.update()
 
 
-MainMenuWindow(multiplayer=False)
+MainMenuWindow(multiplayer=True)
