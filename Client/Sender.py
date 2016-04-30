@@ -9,7 +9,7 @@ import struct
 class Sender:
     key_array = {pygame.K_RIGHT: 0, pygame.K_LEFT: 1, pygame.K_UP: 2, pygame.K_DOWN: 3, pygame.K_SPACE: 4}
 
-    def __init__(self, address=("localhost", 9998)):
+    def __init__(self, address=("25.88.205.228", 9998)):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         if not self.socket.connect(address):
             return
